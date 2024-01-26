@@ -26,11 +26,9 @@ cd babylon
 git checkout v0.7.2
 make install
 
-# 安装完成后可以运行 babylond version 检查是否安装成功。
-# 显示应为 v0.7.2
-
 # 运行节点
 # 初始化节点
+cd
 read -p "请输入你的节点名: " moniker
 babylond init $moniker --chain-id=bbn-test-2
 babylond config chain-id bbn-test-2
@@ -47,6 +45,7 @@ PEERS="8665926525cab128fb6820c12e693beae32189cb@2.58.82.86:16456,97483fca7392b9e
 sed -i.bak -e "s/^persistent_peers *=.*/persistent_peers = \"$PEERS\"/" $HOME/.babylond/config/config.toml
 
 # Pruning设置
+cd
 pruning="custom" && \
 pruning_keep_recent="100" && \
 pruning_keep_every="0" && \
@@ -67,6 +66,7 @@ rm -rf $HOME/.babylond/data
 curl -L https://snapshots.kjnodes.com/babylon-testnet/snapshot_latest.tar.lz4 | tar -Ilz4 -xf - -C $HOME/.babylond
 
 # 启动节点
+cd
 sudo tee <<EOF >/dev/null /etc/systemd/system/babylond.service
 [Unit]
 Description=babylond daemon
