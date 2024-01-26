@@ -30,13 +30,13 @@ make install
 # 初始化节点
 cd
 read -p "请输入你的节点名: " moniker
-babylond init $moniker --chain-id=bbn-test-2
-babylond config chain-id bbn-test-2
+babylon init $moniker --chain-id=bbn-test-2
+babylon config chain-id bbn-test-2
 
 # 下载Genesis 文件
 cd
 wget https://github.com/babylonchain/networks/raw/main/bbn-test-2/genesis.tar.bz2
-tar -xjf genesis.tar.bz2 && rm genesis.tar.bz2
+tar -xjf genesis.tar.bz2
 mv genesis.json ~/.babylond/config/genesis.json
 
 # 设置peer
@@ -67,13 +67,13 @@ curl -L https://snapshots.kjnodes.com/babylon-testnet/snapshot_latest.tar.lz4 | 
 
 # 启动节点
 cd
-sudo tee <<EOF >/dev/null /etc/systemd/system/babylond.service
+sudo tee <<EOF >/dev/null /etc/systemd/system/babylon.service
 [Unit]
-Description=babylond daemon
+Description=babylon daemon
 After=network-online.target
 [Service]
 User=$USER
-ExecStart=$(which babylond) start
+ExecStart=$(which babylon) start
 Restart=on-failure
 RestartSec=3
 LimitNOFILE=10000
@@ -81,5 +81,5 @@ LimitNOFILE=10000
 WantedBy=multi-user.target
 EOF
 sudo systemctl daemon-reload && \
-sudo systemctl enable babylond && \
-sudo systemctl start babylond
+sudo systemctl enable babylon && \
+sudo systemctl start babylon
