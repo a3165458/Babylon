@@ -57,7 +57,7 @@ sudo systemctl daemon-reload
 sudo systemctl enable babylon.service
 
 # Ask for moniker input
-read -p "Enter node moniker: " MONIKER
+read -p "输入节点名称: " MONIKER
 
 # Set node configuration
 babylond config chain-id bbn-test-2
