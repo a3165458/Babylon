@@ -4,4 +4,4 @@
 
 状态查询:systemctl status babylon
 
-查看同步信息：babylon status 2>&1 | jq .SyncInfo
+查看同步信息：babylond status | jq .SyncInfo
