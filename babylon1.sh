@@ -79,7 +79,7 @@ EOF
     echo "节点安装完成。"
 }
 
-# 添加钱包
+# 创建钱包
 function add_wallet() {
     read -p "请输入钱包名称: " wallet_name
     babylond keys add "$wallet_name"
@@ -96,12 +96,12 @@ function check_sync_status() {
     babylond status | jq .SyncInfo
 }
 
-# 查看服务状态
+# 查看babylon服务状态
 function check_service_status() {
     systemctl status babylon
 }
 
-# 日志查询
+# 节点日志查询
 function view_logs() {
     sudo journalctl -u babylon.service -f --no-hostname -o cat
 }
