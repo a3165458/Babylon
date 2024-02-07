@@ -136,8 +136,8 @@ function main_menu() {
     echo "2. 创建钱包"
     echo "3. 导入钱包"
     echo "4. 查看节点同步状态"
-    echo "5. 查看服务状态"
-    echo "6. 日志查询"
+    echo "5. 查看当前服务状态"
+    echo "6. 运行日志查询"
     echo "7. 卸载脚本"
     read -p "请输入选项（1-7）: " OPTION
 
