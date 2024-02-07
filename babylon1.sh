@@ -3,6 +3,9 @@
 # 脚本保存路径
 SCRIPT_PATH="$HOME/manage_babylon.sh"
 
+# 在脚本开始时检查并设置快捷键
+check_and_set_alias
+
 # 自动设置快捷键的功能
 function check_and_set_alias() {
     local alias_name="babylondf"
@@ -157,8 +160,6 @@ function main_menu() {
     esac
 }
 
-# 在脚本开始时检查并设置快捷键
-check_and_set_alias
 
 # 显示主菜单
 main_menu
