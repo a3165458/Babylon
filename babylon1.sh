@@ -17,11 +17,11 @@ function check_and_set_alias() {
 
     # 检查别名是否已经设置
     if ! grep -q "$alias_name" "$shell_rc"; then
-        echo "设置别名 '$alias_name' 到 $shell_rc"
+        echo "设置快捷功能 '$alias_name' 到 $shell_rc"
         echo "alias $alias_name='bash $SCRIPT_PATH'" >> "$shell_rc"
-        echo "别名已设置。请重新打开终端或运行 'source $shell_rc' 来激活别名。"
+        echo "快捷功能已设置。请重新打开终端或运行 'source $shell_rc' 来激活功能。"
     else
-        echo "别名 '$alias_name' 已存在。"
+        
     fi
 }
 
