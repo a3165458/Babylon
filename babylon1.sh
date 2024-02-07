@@ -20,9 +20,6 @@ function check_and_set_alias() {
         echo "设置快捷功能 '$alias_name' 到 $shell_rc"
         echo "alias $alias_name='bash $SCRIPT_PATH'" >> "$shell_rc"
         echo "快捷功能已设置。请重新打开终端或运行 'source $shell_rc' 来激活功能。"
-    else
-        
-    fi
 }
 
 # 节点安装功能
