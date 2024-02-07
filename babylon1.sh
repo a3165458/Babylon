@@ -25,6 +25,7 @@ function check_and_set_alias() {
 }
 
 # 节点安装功能
+
 function install_node() {
     echo "开始节点安装..."
     sudo apt update && sudo apt upgrade -y
@@ -106,6 +107,28 @@ function view_logs() {
     sudo journalctl -u babylon.service -f --no-hostname -o cat
 }
 
+# 卸载脚本功能
+function uninstall_script() {
+    local alias_name="babylondf"
+    local shell_rc_files=("$HOME/.bashrc" "$HOME/.zshrc")
+
+    for shell_rc in "${shell_rc_files[@]}"; do
+        if [ -f "$shell_rc" ]; then
+            # 移除别名
+            sed -i "/alias $alias_name='bash $SCRIPT_PATH'/d" "$shell_rc"
+        fi
+    done
+
+    echo "别名 '$alias_name' 已从shell配置文件中移除。"
+    read -p "是否删除脚本文件本身？(y/n): " delete_script
+    if [[ "$delete_script" == "y" ]]; then
+        rm -f "$SCRIPT_PATH"
+        echo "脚本文件已删除。"
+    else
+        echo "脚本文件未删除。"
+    fi
+}
+
 # 主菜单
 function main_menu() {
     echo "请选择要执行的操作:"
@@ -115,7 +138,8 @@ function main_menu() {
     echo "4. 查看节点同步状态"
     echo "5. 查看服务状态"
     echo "6. 日志查询"
-    read -p "请输入选项（1-6）: " OPTION
+    echo "7. 卸载脚本"
+    read -p "请输入选项（1-7）: " OPTION
 
     case $OPTION in
     1) install_node ;;
@@ -124,6 +148,7 @@ function main_menu() {
     4) check_sync_status ;;
     5) check_service_status ;;
     6) view_logs ;;
+    7) uninstall_script ;;
     *) echo "无效选项。" ;;
     esac
 }
