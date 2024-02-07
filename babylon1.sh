@@ -133,7 +133,7 @@ function uninstall_script() {
 function main_menu() {
     echo "请选择要执行的操作:"
     echo "1. 安装节点"
-    echo "2. 添加钱包"
+    echo "2. 创建钱包"
     echo "3. 导入钱包"
     echo "4. 查看节点同步状态"
     echo "5. 查看服务状态"
