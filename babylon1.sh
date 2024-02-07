@@ -1,9 +1,9 @@
 #!/bin/bash
 
-# 脚本保存路径，请根据实际情况进行修改
+# 脚本保存路径
 SCRIPT_PATH="$HOME/manage_babylon.sh"
 
-# 自动设置别名的功能
+# 自动设置快捷键的功能
 function check_and_set_alias() {
     local alias_name="babylondf"
     local shell_rc="$HOME/.bashrc"
@@ -15,7 +15,7 @@ function check_and_set_alias() {
         shell_rc="$HOME/.bashrc"
     fi
 
-    # 检查别名是否已经设置
+    # 检查快捷键是否已经设置
     if ! grep -q "$alias_name" "$shell_rc"; then
         echo "设置快捷键 '$alias_name' 到 $shell_rc"
         echo "alias $alias_name='bash $SCRIPT_PATH'" >> "$shell_rc"
@@ -114,12 +114,12 @@ function uninstall_script() {
 
     for shell_rc in "${shell_rc_files[@]}"; do
         if [ -f "$shell_rc" ]; then
-            # 移除别名
+            # 移除快捷键
             sed -i "/alias $alias_name='bash $SCRIPT_PATH'/d" "$shell_rc"
         fi
     done
 
-    echo "别名 '$alias_name' 已从shell配置文件中移除。"
+    echo "快捷键 '$alias_name' 已从shell配置文件中移除。"
     read -p "是否删除脚本文件本身？(y/n): " delete_script
     if [[ "$delete_script" == "y" ]]; then
         rm -f "$SCRIPT_PATH"
@@ -153,7 +153,7 @@ function main_menu() {
     esac
 }
 
-# 在脚本开始时检查并设置别名
+# 在脚本开始时检查并设置快捷键
 check_and_set_alias
 
 # 显示主菜单
