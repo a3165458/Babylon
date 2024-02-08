@@ -48,7 +48,7 @@ cd $HOME
 rm -rf babylon
 git clone https://github.com/babylonchain/babylon.git
 cd babylon
-git checkout v0.8.0
+git checkout v0.7.2
 
 # Build binaries
 make build
