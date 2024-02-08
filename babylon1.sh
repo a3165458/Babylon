@@ -29,7 +29,6 @@ function check_and_set_alias() {
 }
 
 # 节点安装功能
-
 function install_node() {
     echo "开始节点安装..."
     sudo apt update && sudo apt upgrade -y
@@ -143,7 +142,8 @@ function main_menu() {
     echo "5. 查看当前服务状态"
     echo "6. 运行日志查询"
     echo "7. 卸载脚本"
-    read -p "请输入选项（1-7）: " OPTION
+    echo "8. 设置快捷键"  
+    read -p "请输入选项（1-8）: " OPTION
 
     case $OPTION in
     1) install_node ;;
@@ -153,12 +153,10 @@ function main_menu() {
     5) check_service_status ;;
     6) view_logs ;;
     7) uninstall_script ;;
+    8) check_and_set_alias ;;  
     *) echo "无效选项。" ;;
     esac
 }
-
-# 在脚本开始时检查并设置快捷键
-check_and_set_alias
 
 # 显示主菜单
 main_menu
