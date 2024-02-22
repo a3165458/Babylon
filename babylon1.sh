@@ -38,7 +38,7 @@ sudo apt update && sudo apt upgrade -y
 sudo apt -qy install curl git jq lz4 build-essential
 
 # Install GO
-rm -rf /usr/local/go && rm -rf $HOME/go/bin && tar -C /usr/local -xzf go1.22.0.linux-amd64.tar.gz
+rm -rf /usr/local/go && rm -rf $HOME/go/bin
 curl -Ls https://go.dev/dl/go1.21.6.linux-amd64.tar.gz | sudo tar -xzf - -C /usr/local
 export PATH=$PATH:/usr/local/go/bin
 go version
