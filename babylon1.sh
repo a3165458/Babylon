@@ -41,6 +41,7 @@ sudo apt -qy install curl git jq lz4 build-essential
 sudo rm -rf /usr/local/go
 curl -L https://go.dev/dl/go1.21.6.linux-amd64.tar.gz | sudo tar -xzf - -C /usr/local
 export PATH=$PATH:/usr/local/go/bin
+export GOPATH=$HOME/go
 go version
 
 # Clone project repository
