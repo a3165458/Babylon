@@ -43,7 +43,7 @@ GO_TAR="go$GO_VERSION.linux-amd64.tar.gz"
 GO_URL="https://go.dev/dl/$GO_TAR"
 
 # 确认并删除旧的Go安装
-read -p "确认删除现有的Go安装吗？[y/N]: " confirm
+read -p "确认删除现有的Go安装吗（如果你确认当前GO环境配置正确可以跳过，否则建议删除并进行安装）？[y/N]: " confirm
 if [[ $confirm == [yY] || $confirm == [yY][eE][sS] ]]; then
     sudo rm -rf $INSTALL_PATH
     echo "正在安装 Golang $GO_VERSION..."
