@@ -55,7 +55,7 @@ make install
 
 # 安装创世文件
 wget https://github.com/babylonchain/networks/raw/main/bbn-test-3/genesis.tar.bz2
-tar -xjf genesis.tar.bz2 && rm genesis.tar.bz2
+tar -xjf genesis.tar.bz2 
 mv genesis.json ~/.babylond/config/genesis.json
 
 # 设置种子节点和peers
