@@ -72,11 +72,6 @@ git checkout v0.8.3
 # 构建和安装 babylond
 make install
 
-# 获取用户输入的节点名称
-read -p "输入节点名称: " MONIKER
-
-# 初始化节点
-babylond init "$MONIKER" --chain-id bbn-test-3
 
 # 安装创世文件
 wget https://github.com/babylonchain/networks/raw/main/bbn-test-3/genesis.tar.bz2
@@ -104,6 +99,13 @@ mkdir -p ~/.babylond/cosmovisor/upgrades
 
 # 复制babylond二进制到Cosmovisor
 cp $(go env GOPATH)/bin/babylond ~/.babylond/cosmovisor/genesis/bin/babylond
+
+
+# 获取用户输入的节点名称
+read -p "输入节点名称: " MONIKER
+
+# 初始化节点
+babylond init "$MONIKER" --chain-id bbn-test-3
 
 # 创建并启动babylond服务
 SERVICE_FILE="/etc/systemd/system/babylond.service"
