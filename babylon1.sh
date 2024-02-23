@@ -38,17 +38,15 @@ sudo apt update && sudo apt upgrade -y
 sudo apt -qy install curl git jq lz4 build-essential bison
 
 # Install GO
-rm -rf /usr/local/go && rm -rf $HOME/go/bin 
-bash < <(curl -s -S -L https://raw.githubusercontent.com/moovweb/gvm/master/binscripts/gvm-installer)
-source /root/.gvm/scripts/gvm
-gvm install go1.4 -B
-gvm use go1.4
-export GOROOT_BOOTSTRAP=$GOROOT
-gvm install go1.17.13
-gvm use go1.17.13
-export GOROOT_BOOTSTRAP=$GOROOT
-gvm install go1.21.6
-gvm use go1.21.6
+sudo rm -rf /usr/local/go;
+curl https://dl.google.com/go/go1.21.6.linux-amd64.tar.gz | sudo tar -C/usr/local -zxvf - ;
+cat <<'EOF' >>$HOME/.bashrc
+export GOROOT=/usr/local/go
+export GOPATH=$HOME/go
+export GO111MODULE=on
+export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin
+EOF
+source $HOME/.bashrc
 
 # Clone project repository
 cd $HOME
