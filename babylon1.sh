@@ -32,92 +32,80 @@ function check_and_set_alias() {
 function install_node() {
 #!/bin/bash
 
-# 更新系统并安装构建工具
 sudo apt update && sudo apt upgrade -y
+
+# Install Build Tools
 sudo apt -qy install curl git jq lz4 build-essential
 
-# 安装指定版本的Golang
-GO_VERSION="1.21.6"
-INSTALL_PATH="/usr/local/go"
-GO_TAR="go$GO_VERSION.linux-amd64.tar.gz"
-GO_URL="https://go.dev/dl/$GO_TAR"
+# Install GO
+rm -rf /usr/local/go && rm -rf $HOME/go/bin 
+wget https://golang.org/dl/go1.21.4.linux-amd64.tar.gz
+sudo tar -C /usr/local -xzf go1.21.4.linux-amd64.tar.gz
+echo 'export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin' >> $HOME/.bash_profile
+source .bash_profile
 
-# 确认并删除旧的Go安装
-read -p "确认删除现有的Go安装吗（如果你确认当前GO环境配置正确可以跳过，否则建议删除并进行安装）？[y/N]: " confirm
-if [[ $confirm == [yY] || $confirm == [yY][eE][sS] ]]; then
-    sudo rm -rf $INSTALL_PATH
-    echo "正在安装 Golang $GO_VERSION..."
-    curl -L $GO_URL | sudo tar -xzf - -C /usr/local
-
-    # 将Go添加到PATH
-    echo "export PATH=\$PATH:$INSTALL_PATH/bin" >> ~/.profile
-    source ~/.profile
-else
-    echo "Go安装未删除。"
-    exit 1
-fi
-
-# 验证Go安装
-go version | grep "go$GO_VERSION" &>/dev/null && echo "Golang $GO_VERSION 安装成功。" || { echo "Golang 安装失败。"; exit 1; }
-
-# 克隆 Babylon 项目仓库
+# Clone project repository
 cd $HOME
-if [ -d "babylon" ]; then
-    rm -rf babylon
-fi
+rm -rf babylon
 git clone https://github.com/babylonchain/babylon.git
 cd babylon
 git checkout v0.8.3
 
-# 构建和安装 babylond
+# Build binaries
 make install
 
-# 获取用户输入的节点名称
+# Ask for moniker input
 read -p "输入节点名称: " MONIKER
 
-# 初始化节点
-babylond init "$MONIKER" --chain-id bbn-test-3
+# Initialize the node
+babylond init $MONIKER --chain-id bbn-test-3
+
 
 # 安装创世文件
 wget https://github.com/babylonchain/networks/raw/main/bbn-test-3/genesis.tar.bz2
 tar -xjf genesis.tar.bz2 && rm genesis.tar.bz2
 mv genesis.json ~/.babylond/config/genesis.json
 
-# 设置种子节点和peers
-SEEDS="49b4685f16670e784a0fe78f37cd37d56c7aff0e@3.14.89.82:26656,9cb1974618ddd541c9a4f4562b842b96ffaf1446@3.16.63.237:26656"
+# 设置种子节点
+sed -i -e 's|^seeds *=.*|seeds = "49b4685f16670e784a0fe78f37cd37d56c7aff0e@3.14.89.82:26656,9cb1974618ddd541c9a4f4562b842b96ffaf1446@3.16.63.237:26656"|' $HOME/.babylond/config/config.toml
+
+# 设置BTC网络
+sed -i -e "s|^\(network = \).*|\1\"signet\"|" $HOME/.babylond/config/app.toml
+
+# 设置最小gas
+sed -i -e "s|^minimum-gas-prices *=.*|minimum-gas-prices = \"0.00001ubbn\"|" $HOME/.babylond/config/app.toml
+
+# 设置peers
 PEERS="5463943178cdb57a02d6d20964e4061dfcf0afb4@142.132.154.53:20656,3774fb9996de16c2f2280cb2d938db7af88d50be@162.62.52.147:26656,9d840ebd61005b1b1b1794c0cf11ef253faf9a84@43.157.95.203:26656,0ccb869ba63cf7730017c357189d01b20e4eb277@185.84.224.125:20656,3f5fcc3c8638f0af476e37658e76984d6025038b@134.209.203.147:26656,163ba24f7ef8f1a4393d7a12f11f62da4370f494@89.117.57.201:10656,1bdc05708ad36cd25b3696e67ac455b00d480656@37.60.243.219:26656,59df4b3832446cd0f9c369da01f2aa5fe9647248@65.109.97.139:26656,e3b214c693b386d118ea4fd9d56ea0600739d910@65.108.195.152:26656,c0ee3e7f140b2de189ce853cfccb9fb2d922eb66@95.217.203.226:26656,e46f38454d4fb889f5bae202350930410a23b986@65.21.205.113:26656,35abd10cba77f9d2b9b575dfa0c7c8c329bf4da3@104.196.182.128:26656,6f3f691d39876095009c223bf881ccad7bd77c13@176.227.202.20:56756,1ecc4a9d703ad52d16bf30a592597c948c115176@165.154.244.14:26656,0c9f976c92bcffeab19944b83b056d06ea44e124@5.78.110.19:26656,c3e82156a0e2f3d5373d5c35f7879678f29eaaad@144.76.28.163:46656,b82b321380d1d949d1eed6da03696b1b2ef987ba@148.251.176.236:3000,eee116a6a816ca0eb2d0a635f0a1b3dd4f895638@84.46.251.131:26656,894d56d58448a158ed150b384e2e57dd7895c253@164.92.216.48:26656,ddd6f401792e0e35f5a04789d4db7dc386efc499@135.181.182.162:26656,326fee158e9e24a208e53f6703c076e1465e739d@193.34.212.39:26659,86e9a68f0fd82d6d711aa20cc2083c836fb8c083@222.106.187.14:56000,fad3a0485745a49a6f95a9d61cda0615dcc6beff@89.58.62.213:26501,ce1caddb401d530cc2039b219de07994fc333dcf@162.19.97.200:26656,66045f11c610b6041458aa8553ffd5d0241fd11e@103.50.32.134:56756,82191d0763999d30e3ddf96cc366b78694d8cee1@162.19.169.211:26656"
-CONFIG_TOML="$HOME/.babylond/config/config.toml"
-APP_TOML="$HOME/.babylond/config/app.toml"
+sed -i 's|^persistent_peers *=.*|persistent_peers = "'$PEERS'"|' $HOME/.babylond/config/config.toml
 
-sed -i -e "s|^seeds =.*|seeds = \"$SEEDS\"|" $CONFIG_TOML
-sed -i -e 's|^persistent_peers *=.*|persistent_peers = "'$PEERS'"|' $CONFIG_TOML
-sed -i -e "s|^\(network = \).*|\1\"signet\"|" $APP_TOML
-sed -i -e "s|^minimum-gas-prices =.*|minimum-gas-prices = \"0.00001ubbn\"|" $APP_TOML
-
-# 安装 Cosmovisor
-export PATH=$PATH:$(go env GOPATH)/bin
+# Download and install Cosmovisor
 go install cosmossdk.io/tools/cosmovisor/cmd/cosmovisor@latest
 
-# 创建Cosmovisor文件夹结构
+# 创建文件夹
+mkdir -p ~/.babylond
+mkdir -p ~/.babylond/cosmovisor
+mkdir -p ~/.babylond/cosmovisor/genesis
 mkdir -p ~/.babylond/cosmovisor/genesis/bin
 mkdir -p ~/.babylond/cosmovisor/upgrades
 
-# 复制babylond二进制到Cosmovisor
-cp $(go env GOPATH)/bin/babylond ~/.babylond/cosmovisor/genesis/bin/babylond
+# 复制二进制文件
+cp $GOPATH/bin/babylond ~/.babylond/cosmovisor/genesis/bin/babylond
 
-# 创建并启动babylond服务
-SERVICE_FILE="/etc/systemd/system/babylond.service"
-sudo tee $SERVICE_FILE > /dev/null <<EOF
+
+# Create and start service
+sudo tee /etc/systemd/system/babylond.service > /dev/null <<EOF
 [Unit]
-Description=Babylon Daemon
+Description=Babylon daemon
 After=network-online.target
 
 [Service]
 User=$USER
-ExecStart=$(which cosmovisor) run start
+ExecStart=$(which cosmovisor) run start --x-crisis-skip-assert-invariants
 Restart=always
 RestartSec=3
 LimitNOFILE=infinity
+
 Environment="DAEMON_NAME=babylond"
 Environment="DAEMON_HOME=${HOME}/.babylond"
 Environment="DAEMON_RESTART_AFTER_UPGRADE=true"
@@ -127,11 +115,11 @@ Environment="DAEMON_ALLOW_DOWNLOAD_BINARIES=false"
 WantedBy=multi-user.target
 EOF
 
-sudo systemctl daemon-reload
-sudo systemctl enable babylond
-sudo systemctl start babylond
+sudo -S systemctl daemon-reload
+sudo -S systemctl enable babylond
+sudo -S systemctl start babylond
 
-echo "Babylon 节点安装完成。"
+    echo "节点安装完成。"
 }
 
 # 创建钱包
@@ -153,12 +141,12 @@ function check_sync_status() {
 
 # 查看babylon服务状态
 function check_service_status() {
-    systemctl status babylond
+    systemctl status babylon
 }
 
 # 节点日志查询
 function view_logs() {
-    sudo journalctl -u babylond.service -f --no-hostname -o cat
+    sudo journalctl -u babylon.service -f --no-hostname -o cat
 }
 
 # 卸载脚本功能
