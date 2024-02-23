@@ -37,25 +37,50 @@ sudo apt update && sudo apt upgrade -y
 sudo apt -qy install curl git jq lz4 build-essential
 
 # 安装指定版本的Golang
-sudo rm -rvf /usr/local/go/
-wget https://golang.org/dl/go1.21.4.linux-amd64.tar.gz
-sudo tar -C /usr/local -xzf go1.21.4.linux-amd64.tar.gz
-export PATH=$PATH:/usr/local/go/bin
+GO_VERSION="1.21.6"
+INSTALL_PATH="/usr/local/go"
+GO_TAR="go$GO_VERSION.linux-amd64.tar.gz"
+GO_URL="https://go.dev/dl/$GO_TAR"
 
+# 确认并删除旧的Go安装
+read -p "确认删除现有的Go安装吗（如果你确认当前GO环境配置正确可以跳过，否则建议删除并进行安装）？[y/N]: " confirm
+if [[ $confirm == [yY] || $confirm == [yY][eE][sS] ]]; then
+    sudo rm -rf $INSTALL_PATH
+    echo "正在安装 Golang $GO_VERSION..."
+    curl -L $GO_URL | sudo tar -xzf - -C /usr/local
+
+    # 将Go添加到PATH
+    echo "export PATH=\$PATH:$INSTALL_PATH/bin" >> ~/.profile
+    source ~/.profile
+else
+    echo "Go安装未删除。"
+    exit 1
+fi
+
+# 验证Go安装
+go version | grep "go$GO_VERSION" &>/dev/null && echo "Golang $GO_VERSION 安装成功。" || { echo "Golang 安装失败。"; exit 1; }
 
 # 克隆 Babylon 项目仓库
 cd $HOME
-git clone https://github.com/babylonchain/babylon
+if [ -d "babylon" ]; then
+    rm -rf babylon
+fi
+git clone https://github.com/babylonchain/babylon.git
 cd babylon
 git checkout v0.8.3
 
 # 构建和安装 babylond
 make install
 
+# 获取用户输入的节点名称
+read -p "输入节点名称: " MONIKER
+
+# 初始化节点
+babylond init "$MONIKER" --chain-id bbn-test-3
 
 # 安装创世文件
 wget https://github.com/babylonchain/networks/raw/main/bbn-test-3/genesis.tar.bz2
-tar -xjf genesis.tar.bz2 
+tar -xjf genesis.tar.bz2 && rm genesis.tar.bz2
 mv genesis.json ~/.babylond/config/genesis.json
 
 # 设置种子节点和peers
@@ -79,13 +104,6 @@ mkdir -p ~/.babylond/cosmovisor/upgrades
 
 # 复制babylond二进制到Cosmovisor
 cp $(go env GOPATH)/bin/babylond ~/.babylond/cosmovisor/genesis/bin/babylond
-
-
-# 获取用户输入的节点名称
-read -p "输入节点名称: " MONIKER
-
-# 初始化节点
-babylond init "$MONIKER" --chain-id bbn-test-3
 
 # 创建并启动babylond服务
 SERVICE_FILE="/etc/systemd/system/babylond.service"
