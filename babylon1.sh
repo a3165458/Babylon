@@ -41,13 +41,10 @@ sudo rm -rvf /usr/local/go/
 wget https://golang.org/dl/go1.21.4.linux-amd64.tar.gz
 sudo tar -C /usr/local -xzf go1.21.4.linux-amd64.tar.gz
 export PATH=$PATH:/usr/local/go/bin
-go vesion
+
 
 # 克隆 Babylon 项目仓库
 cd $HOME
-if [ -d "babylon" ]; then
-    rm -rf babylon
-fi
 git clone https://github.com/babylonchain/babylon.git
 cd babylon
 git checkout v0.8.3
