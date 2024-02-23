@@ -37,28 +37,11 @@ sudo apt update && sudo apt upgrade -y
 sudo apt -qy install curl git jq lz4 build-essential
 
 # 安装指定版本的Golang
-GO_VERSION="1.21.6"
-INSTALL_PATH="/usr/local/go"
-GO_TAR="go$GO_VERSION.linux-amd64.tar.gz"
-GO_URL="https://go.dev/dl/$GO_TAR"
-
-# 确认并删除旧的Go安装
-read -p "确认删除现有的Go安装吗（如果你确认当前GO环境配置正确可以跳过，否则建议删除并进行安装）？[y/N]: " confirm
-if [[ $confirm == [yY] || $confirm == [yY][eE][sS] ]]; then
-    sudo rm -rf $INSTALL_PATH
-    echo "正在安装 Golang $GO_VERSION..."
-    curl -L $GO_URL | sudo tar -xzf - -C /usr/local
-
-    # 将Go添加到PATH
-    echo "export PATH=\$PATH:$INSTALL_PATH/bin" >> ~/.profile
-    source ~/.profile
-else
-    echo "Go安装未删除。"
-    exit 1
-fi
-
-# 验证Go安装
-go version | grep "go$GO_VERSION" &>/dev/null && echo "Golang $GO_VERSION 安装成功。" || { echo "Golang 安装失败。"; exit 1; }
+sudo rm -rvf /usr/local/go/
+wget https://golang.org/dl/go1.21.4.linux-amd64.tar.gz
+sudo tar -C /usr/local -xzf go1.21.4.linux-amd64.tar.gz
+export PATH=$PATH:/usr/local/go/bin
+go vesion
 
 # 克隆 Babylon 项目仓库
 cd $HOME
