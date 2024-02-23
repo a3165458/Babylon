@@ -45,7 +45,7 @@ export PATH=$PATH:/usr/local/go/bin
 
 # 克隆 Babylon 项目仓库
 cd $HOME
-git clone https://github.com/babylonchain/babylon.git
+git clone https://github.com/babylonchain/babylon
 cd babylon
 git checkout v0.8.3
 
