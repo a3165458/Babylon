@@ -66,7 +66,7 @@ sudo ln -s $HOME/.babylond/cosmovisor/current/bin/babylond /usr/local/bin/babylo
 go install cosmossdk.io/tools/cosmovisor/cmd/cosmovisor@latest
 
 # Create and start service
-sudo tee /etc/systemd/system/babylon.service > /dev/null << EOF
+sudo tee /etc/systemd/system/babylond.service > /dev/null << EOF
 [Unit]
 Description=babylon node service
 After=network-online.target
@@ -86,7 +86,7 @@ Environment="PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/
 WantedBy=multi-user.target
 EOF
 sudo systemctl daemon-reload
-sudo systemctl enable babylon.service
+sudo systemctl enable babylond.service
 
 # Ask for moniker input
 read -p "输入节点名称: " MONIKER
@@ -152,12 +152,12 @@ function check_sync_status() {
 
 # 查看babylon服务状态
 function check_service_status() {
-    systemctl status babylon
+    systemctl status babylond
 }
 
 # 节点日志查询
 function view_logs() {
-    sudo journalctl -u babylon.service -f --no-hostname -o cat
+    sudo journalctl -u babylond.service -f --no-hostname -o cat
 }
 
 # 卸载脚本功能
