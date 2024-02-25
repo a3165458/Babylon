@@ -126,7 +126,7 @@ function add_validator() {
     read -p "请输入你的验证者名称: " validator_name
     sudo tee ~/validator.json > /dev/null <<EOF
 {
-  "pubkey": $(babylond tendermint show-validator),
+  "pubkey": $(/root/go/bin/babylond tendermint show-validator),
   "amount": "1000000ubbn",
   "moniker": "$validator_name",
   "details": "dalubi",
@@ -136,7 +136,7 @@ function add_validator() {
   "min-self-delegation": "1"
 }
 EOF
-    babylond tx checkpointing create-validator ~/validator.json \
+    /root/go/bin/bbabylond tx checkpointing create-validator ~/validator.json \
     --chain-id=bbn-test-3 \
     --gas="auto" \
     --gas-adjustment="1.5" \
