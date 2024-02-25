@@ -136,7 +136,7 @@ function add_validator() {
   "min-self-delegation": "1"
 }
 EOF
-    /root/go/bin/bbabylond tx checkpointing create-validator ~/validator.json \
+    /root/go/bin/babylond tx checkpointing create-validator ~/validator.json \
     --chain-id=bbn-test-3 \
     --gas="auto" \
     --gas-adjustment="1.5" \
