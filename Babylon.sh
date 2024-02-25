@@ -75,7 +75,7 @@ sed -i -e "s|^minimum-gas-prices *=.*|minimum-gas-prices = \"0.00001ubbn\"|" $HO
 
 
 # 设置peers
-PEERS="89d2fbf3dd09ee4bb1a8e879eda36e022a374e72@194.163.174.44:26656"
+PEERS="89d2fbf3dd09ee4bb1a8e879eda36e022a374e72@194.163.174.44:26656,13bf74742577b6d165c273a6446ee64468f86e2b@173.212.225.163:26656"
 sed -i 's|^persistent_peers *=.*|persistent_peers = "'$PEERS'"|' $HOME/.babylond/config/config.tom
 
 
