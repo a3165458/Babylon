@@ -121,6 +121,29 @@ function add_wallet() {
     /root/go/bin/babylond keys add "$wallet_name"
 }
 
+# 创建验证者
+function add_validator() {
+    read -p "请输入你的验证者名称: " validator_name
+    sudo tee ~/validator.json > /dev/null <<EOF
+{
+  "pubkey": $(babylond tendermint show-validator),
+  "amount": "1000000ubbn",
+  "moniker": "$validator_name",
+  "details": "dalubi",
+  "commission-rate": "0.10",
+  "commission-max-rate": "0.20",
+  "commission-max-change-rate": "0.01",
+  "min-self-delegation": "1"
+}
+EOF
+    babylond tx checkpointing create-validator ~/validator.json \
+    --chain-id=bbn-test-3 \
+    --gas="auto" \
+    --gas-adjustment="1.5" \
+    --gas-prices="0.025ubbn" \
+    --from=wallet
+}
+
 # 导入钱包
 function import_wallet() {
     read -p "请输入钱包名称: " wallet_name
@@ -170,22 +193,24 @@ function main_menu() {
     echo "1. 安装节点"
     echo "2. 创建钱包"
     echo "3. 导入钱包"
-    echo "4. 查看节点同步状态"
-    echo "5. 查看当前服务状态"
-    echo "6. 运行日志查询"
-    echo "7. 卸载脚本"
-    echo "8. 设置快捷键"  
-    read -p "请输入选项（1-8）: " OPTION
+    echo "4. 创建验证者"
+    echo "5. 查看节点同步状态"
+    echo "6. 查看当前服务状态"
+    echo "7. 运行日志查询"
+    echo "8. 卸载脚本"
+    echo "9. 设置快捷键"  
+    read -p "请输入选项（1-9）: " OPTION
 
     case $OPTION in
     1) install_node ;;
     2) add_wallet ;;
     3) import_wallet ;;
-    4) check_sync_status ;;
-    5) check_service_status ;;
-    6) view_logs ;;
-    7) uninstall_script ;;
-    8) check_and_set_alias ;;  
+    4) add_validator ;;
+    5) check_sync_status ;;
+    6) check_service_status ;;
+    7) view_logs ;;
+    8) uninstall_script ;;
+    9) check_and_set_alias ;;  
     *) echo "无效选项。" ;;
     esac
 }
