@@ -49,13 +49,13 @@ git clone https://github.com/babylonchain/babylon
 cd babylon
 git checkout v0.8.3
 
-# Build binaries
+# 创建安装
 make install
 
-# Ask for moniker input
+# 创建节点名称
 read -p "输入节点名称: " MONIKER
 
-# Initialize the node
+# 配置节点
 babylond init $MONIKER --chain-id bbn-test-3
 
 
@@ -79,7 +79,7 @@ PEERS="89d2fbf3dd09ee4bb1a8e879eda36e022a374e72@194.163.174.44:26656,13bf7474257
 sed -i 's|^persistent_peers *=.*|persistent_peers = "'$PEERS'"|' $HOME/.babylond/config/config.toml
 
 
-# Create and start service
+# 设置启动服务
 sudo tee /etc/systemd/system/babylond.service > /dev/null <<EOF
 [Unit]
 Description=Babylon daemon
