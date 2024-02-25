@@ -111,18 +111,18 @@ sudo -S systemctl start babylond
 # 创建钱包
 function add_wallet() {
     read -p "请输入钱包名称: " wallet_name
-    babylond keys add "$wallet_name"
+    /root/go/bin/babylond keys add "$wallet_name"
 }
 
 # 导入钱包
 function import_wallet() {
     read -p "请输入钱包名称: " wallet_name
-    babylond keys add "$wallet_name" --recover
+    /root/go/bin/babylond keys add "$wallet_name" --recover
 }
 
 # 查看节点同步状态
 function check_sync_status() {
-    babylond status | jq .sync_info
+    /root/go/bin/babylond status | jq .sync_info
 }
 
 # 查看babylon服务状态
