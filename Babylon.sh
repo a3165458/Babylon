@@ -150,6 +150,12 @@ function import_wallet() {
     /root/go/bin/babylond keys add "$wallet_name" --recover
 }
 
+# 查询余额
+function check_balances() {
+    read -p "请输入钱包地址: " wallet_address
+    /root/go/bin/babylond query bank balances "$wallet_address" 
+}
+
 # 查看节点同步状态
 function check_sync_status() {
     /root/go/bin/babylond status | jq .sync_info
@@ -194,23 +200,25 @@ function main_menu() {
     echo "2. 创建钱包"
     echo "3. 导入钱包"
     echo "4. 创建验证者"
-    echo "5. 查看节点同步状态"
-    echo "6. 查看当前服务状态"
-    echo "7. 运行日志查询"
-    echo "8. 卸载脚本"
-    echo "9. 设置快捷键"  
-    read -p "请输入选项（1-9）: " OPTION
+    echo "5. 查看钱包地址余额"
+    echo "6. 查看节点同步状态"
+    echo "7. 查看当前服务状态"
+    echo "8. 运行日志查询"
+    echo "9. 卸载脚本"
+    echo "10. 设置快捷键"  
+    read -p "请输入选项（1-10）: " OPTION
 
     case $OPTION in
     1) install_node ;;
     2) add_wallet ;;
     3) import_wallet ;;
     4) add_validator ;;
-    5) check_sync_status ;;
-    6) check_service_status ;;
-    7) view_logs ;;
-    8) uninstall_script ;;
-    9) check_and_set_alias ;;  
+    5) check_balances ;;
+    6) check_sync_status ;;
+    7) check_service_status ;;
+    8) view_logs ;;
+    9) uninstall_script ;;
+    10) check_and_set_alias ;;  
     *) echo "无效选项。" ;;
     esac
 }
