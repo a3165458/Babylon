@@ -162,7 +162,7 @@ function check_service_status() {
 
 # 节点日志查询
 function view_logs() {
-    sudo journalctl -u babylond.service -f --no-hostname -o cat
+    sudo journalctl -f -u babylond.service 
 }
 
 # 卸载脚本功能
