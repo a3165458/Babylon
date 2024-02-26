@@ -42,9 +42,7 @@ curl -L https://go.dev/dl/go1.21.6.linux-amd64.tar.gz | sudo tar -xzf - -C /usr/
 echo 'export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin' >> $HOME/.profile
 source $HOME/.profile
 echo "export GOPATH=$HOME/go" >> ~/.bashrc
-source ~/.bashrc
 echo "export GOBIN=$GOPATH/bin" >> ~/.bashrc
-source ~/.bashrc
 echo "export PATH=$PATH:$GOBIN" >> ~/.bashrc
 source ~/.bashrc
 
