@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # 脚本保存路径
-SCRIPT_PATH="$HOME/manage_babylon.sh"
+SCRIPT_PATH="$HOME/Babylon.sh"
 
 # 自动设置快捷键的功能
 function check_and_set_alias() {
