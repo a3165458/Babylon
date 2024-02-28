@@ -40,6 +40,7 @@ sudo apt -qy install curl git jq lz4 build-essential
 sudo rm -rf /usr/local/go
 curl -L https://go.dev/dl/go1.22.0.linux-amd64.tar.gz | sudo tar -xzf - -C /usr/local
 echo 'export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin' >> $HOME/.profile
+echo "export GOPATH=$HOME/go" >> $HOME/.profile
 source $HOME/.profile
 
 # 克隆项目仓库
