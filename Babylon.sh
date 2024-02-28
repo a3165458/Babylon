@@ -102,9 +102,6 @@ Environment="DAEMON_ALLOW_DOWNLOAD_BINARIES=false"
 WantedBy=multi-user.target
 EOF
 
-curl -L https://snapshots.kjnodes.com/babylon-testnet/snapshot_latest.tar.lz4 | tar -Ilz4 -xf - -C $HOME/.babylond
-[[ -f $HOME/.babylond/data/upgrade-info.json ]] && cp $HOME/.babylond/data/upgrade-info.json $HOME/.babylond/cosmovisor/genesis/upgrade-info.json
-
 
 sudo -S systemctl daemon-reload
 sudo -S systemctl enable babylond
