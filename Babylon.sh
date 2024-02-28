@@ -38,10 +38,11 @@ sudo apt -qy install curl git jq lz4 build-essential
 
 # 安装 Go
 sudo rm -rf /usr/local/go
-curl -L https://go.dev/dl/go1.22.0.linux-amd64.tar.gz | sudo tar -xzf - -C /usr/local
+wget https://go.dev/dl/go1.21.6.linux-amd64.tar.gz && sudo tar -xzf - -C /usr/local
 echo 'export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin' >> $HOME/.profile
-echo "export GOPATH=$HOME/go" >> $HOME/.profile
+echo "export GOBIN=$GOPATH/bin" >> $HOME/.profile
 source $HOME/.profile
+
 
 # 克隆项目仓库
 cd $HOME
@@ -102,7 +103,6 @@ Environment="DAEMON_ALLOW_DOWNLOAD_BINARIES=false"
 WantedBy=multi-user.target
 EOF
 
-
 sudo -S systemctl daemon-reload
 sudo -S systemctl enable babylond
 sudo -S systemctl start babylond
@@ -113,7 +113,7 @@ sudo -S systemctl start babylond
 # 创建钱包
 function add_wallet() {
     read -p "请输入钱包名称: " wallet_name
-    babylond keys add "$wallet_name"
+    /root/go/bin/babylond keys add "$wallet_name"
 }
 
 # 创建验证者
@@ -121,8 +121,8 @@ function add_validator() {
     read -p "请输入你的验证者名称: " validator_name
     sudo tee ~/validator.json > /dev/null <<EOF
 {
-  "pubkey": $(babylond tendermint show-validator),
-  "amount": "100000ubbn",
+  "pubkey": $(/root/go/bin/babylond tendermint show-validator),
+  "amount": "1000000ubbn",
   "moniker": "$validator_name",
   "details": "dalubi",
   "commission-rate": "0.10",
@@ -131,7 +131,7 @@ function add_validator() {
   "min-self-delegation": "1"
 }
 EOF
-    babylond tx checkpointing create-validator ~/validator.json \
+    /root/go/bin/babylond tx checkpointing create-validator ~/validator.json \
     --chain-id=bbn-test-3 \
     --gas="auto" \
     --gas-adjustment="1.5" \
@@ -142,18 +142,18 @@ EOF
 # 导入钱包
 function import_wallet() {
     read -p "请输入钱包名称: " wallet_name
-    babylond keys add "$wallet_name" --recover
+    /root/go/bin/babylond keys add "$wallet_name" --recover
 }
 
 # 查询余额
 function check_balances() {
     read -p "请输入钱包地址: " wallet_address
-    babylond query bank balances "$wallet_address" 
+    /root/go/bin/babylond query bank balances "$wallet_address" 
 }
 
 # 查看节点同步状态
 function check_sync_status() {
-    babylond status | jq .sync_info
+    /root/go/bin/babylond status | jq .sync_info
 }
 
 # 查看babylon服务状态
