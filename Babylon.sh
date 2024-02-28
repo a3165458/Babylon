@@ -115,7 +115,7 @@ sudo -S systemctl start babylond
 # 创建钱包
 function add_wallet() {
     read -p "请输入钱包名称: " wallet_name
-    /root/go/bin/babylond keys add "$wallet_name"
+    babylond keys add "$wallet_name"
 }
 
 # 创建验证者
@@ -123,7 +123,7 @@ function add_validator() {
     read -p "请输入你的验证者名称: " validator_name
     sudo tee ~/validator.json > /dev/null <<EOF
 {
-  "pubkey": $(/root/go/bin/babylond tendermint show-validator),
+  "pubkey": $(babylond tendermint show-validator),
   "amount": "1000000ubbn",
   "moniker": "$validator_name",
   "details": "dalubi",
@@ -133,7 +133,7 @@ function add_validator() {
   "min-self-delegation": "1"
 }
 EOF
-    /root/go/bin/babylond tx checkpointing create-validator ~/validator.json \
+    babylond tx checkpointing create-validator ~/validator.json \
     --chain-id=bbn-test-3 \
     --gas="auto" \
     --gas-adjustment="1.5" \
@@ -144,18 +144,18 @@ EOF
 # 导入钱包
 function import_wallet() {
     read -p "请输入钱包名称: " wallet_name
-    /root/go/bin/babylond keys add "$wallet_name" --recover
+    babylond keys add "$wallet_name" --recover
 }
 
 # 查询余额
 function check_balances() {
     read -p "请输入钱包地址: " wallet_address
-    /root/go/bin/babylond query bank balances "$wallet_address" 
+    babylond query bank balances "$wallet_address" 
 }
 
 # 查看节点同步状态
 function check_sync_status() {
-    /root/go/bin/babylond status | jq .sync_info
+    babylond status | jq .sync_info
 }
 
 # 查看babylon服务状态
