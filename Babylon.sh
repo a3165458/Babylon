@@ -87,6 +87,7 @@ PEERS="89d2fbf3dd09ee4bb1a8e879eda36e022a374e72@194.163.174.44:26656,13bf7474257
 sed -i 's|^persistent_peers *=.*|persistent_peers = "'$PEERS'"|' $HOME/.babylond/config/config.toml
 
 
+curl -L https://snapshots.kjnodes.com/babylon-testnet/snapshot_latest.tar.lz4 | tar -Ilz4 -xf - -C $HOME/.babylond
 
 # 设置启动服务
 sudo tee /etc/systemd/system/babylond.service > /dev/null <<EOF
