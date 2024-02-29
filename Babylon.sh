@@ -38,7 +38,7 @@ sudo apt -qy install curl git jq lz4 build-essential
 
 # 安装 Go
 sudo rm -rf /usr/local/go
-curl -L https://go.dev/dl/go1.21.6.linux-amd64.tar.gz | sudo tar -xzf - -C /usr/local
+curl -L https://go.dev/dl/go1.22.0.linux-amd64.tar.gz | sudo tar -xzf - -C /usr/local
 export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin >> $HOME/.profile
 export GOPATH=$HOME/go >> $HOME/.profile
 . $HOME/.profile
@@ -80,8 +80,6 @@ sed -i -e "s|^minimum-gas-prices *=.*|minimum-gas-prices = \"0.00001ubbn\"|" $HO
 PEERS="89d2fbf3dd09ee4bb1a8e879eda36e022a374e72@194.163.174.44:26656,13bf74742577b6d165c273a6446ee64468f86e2b@173.212.225.163:26656,8e7ab5be52973526ec3e0e398610d867f6d1cdf3@60.16.101.143:26656,f9982304e00f6130faba0a4cff3c6f0b3d05e6e2@37.60.237.50:26654,6d051b12dfb72d6e847461e28d3ca1277904e2d4@37.60.243.112:26654,370819ad94c2f8311c6c4e51d66f524f35976c37@184.174.35.244:26654,9b9b8a780caa4b4ac5084103e575d8f97c58983d@109.199.112.117:26656,3260ed4e295781767b46cd565f899bd35eb55686@158.220.99.30:26656,6f17526296be202f3657eb9aab3d0ecf7906b10b@158.220.99.172:26656"
 sed -i 's|^persistent_peers *=.*|persistent_peers = "'$PEERS'"|' $HOME/.babylond/config/config.toml
 
-# 下载快照
-curl "https://snapshots-testnet.nodejumper.io/babylon-testnet/babylon-testnet_latest.tar.lz4" | lz4 -dc - | tar -xf - -C "$HOME/.babylond"
 
 
 # 设置启动服务
