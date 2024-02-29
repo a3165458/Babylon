@@ -37,11 +37,16 @@ sudo apt update && sudo apt upgrade -y
 sudo apt -qy install curl git jq lz4 build-essential
 
 # 安装 Go
+cd $HOME
+VER="1.22.0"
+wget "https://golang.org/dl/go$VER.linux-amd64.tar.gz"
 sudo rm -rf /usr/local/go
-curl -L https://go.dev/dl/go1.22.0.linux-amd64.tar.gz | sudo tar -xzf - -C /usr/local
-export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin >> $HOME/.profile
-export GOPATH=$HOME/go >> $HOME/.profile
-. $HOME/.profile
+sudo tar -C /usr/local -xzf "go$VER.linux-amd64.tar.gz"
+rm "go$VER.linux-amd64.tar.gz"
+[ ! -f ~/.bash_profile ] && touch ~/.bash_profile
+echo "export PATH=$PATH:/usr/local/go/bin:~/go/bin" >> ~/.bash_profile
+source $HOME/.bash_profile
+[ ! -d ~/go/bin ] && mkdir -p ~/go/bin
 
 
 # 克隆项目仓库
@@ -53,6 +58,7 @@ git checkout v0.8.3
 
 # 创建安装
 make install
+
 
 # 创建节点名称
 read -p "输入节点名称: " MONIKER
