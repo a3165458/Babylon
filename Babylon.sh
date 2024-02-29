@@ -121,7 +121,7 @@ function add_validator() {
     sudo tee ~/validator.json > /dev/null <<EOF
 {
   "pubkey": $(babylond tendermint show-validator),
-  "amount": "1000000ubbn",
+  "amount": "100000ubbn",
   "moniker": "$validator_name",
   "details": "dalubi",
   "commission-rate": "0.10",
