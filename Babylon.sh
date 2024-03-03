@@ -5,7 +5,7 @@ SCRIPT_PATH="$HOME/Babylon.sh"
 
 # 自动设置快捷键的功能
 function check_and_set_alias() {
-    local alias_name="babylondf"
+    local alias_name="bbl"
     local shell_rc="$HOME/.bashrc"
 
     # 对于Zsh用户，使用.zshrc
