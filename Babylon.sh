@@ -113,6 +113,7 @@ sudo -S systemctl enable babylond
 sudo -S systemctl start babylond
 
     echo '====================== 安装完成 ==========================='
+    
 }
 
 # 创建钱包
