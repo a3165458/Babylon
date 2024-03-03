@@ -112,7 +112,7 @@ sudo -S systemctl daemon-reload
 sudo -S systemctl enable babylond
 sudo -S systemctl start babylond
 
-    echo "节点安装完成。"
+    echo '====================== 安装完成 ==========================='
 }
 
 # 创建钱包
