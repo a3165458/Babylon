@@ -44,7 +44,6 @@ curl https://dl.google.com/go/go1.22.0.linux-amd64.tar.gz | sudo tar -C/usr/loca
 cat <<'EOF' >>$HOME/.profile
 export GOROOT=/usr/local/go
 export GOPATH=$HOME/go
-export GO111MODULE=on
 export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin
 EOF
 source $HOME/.profile
