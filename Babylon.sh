@@ -94,6 +94,9 @@ sed -i -e "s|^minimum-gas-prices *=.*|minimum-gas-prices = \"0.00001ubbn\"|" $HO
 PEERS="8922e2644ed7af59a2a724819432aae5df8c1197@154.26.128.52:26656,724c8c4b382a2832b65b19462baaa879ede4a647@85.148.51.82:26656,79973384380cb9135411bd6d79c7159f51373b18@133.242.221.45:26656,5145171795b9929c41374ce02feef8d11228c33b@160.202.128.199:55706,75d9957d90caa8a457a94d33dc69f7e847f4b58c@37.60.248.54:26656,38b27d582d7fcbe9ce3ef0b30b4e8e70acad7b62@116.203.55.220:26656,f43d529b140714bc12745662185b5107d464410d@78.46.61.108:46656,1566d505b8fa40b067f2d881c380f5866c618561@94.228.162.187:26656,79befb0680b4d3670bc46777677b4e904faab5e1@154.26.130.53:26656,d328c6f74f5039a0d3d829a86c3c3911ddf03e7a@109.199.115.129:26656,faeb6f14ed03744e3bdda42f207224944c2d5e90@173.249.52.53:26656,2d241785bf3004d82be8d32c901d62d21d9e70f2@180.83.70.240:26656,4ba238c40cbd54b654cff009fbd02373a2235a61@207.180.218.52:26656,54fce5236ad360aaccc731a164f720d9eb62951c@109.199.115.132:26656,487cbabe4db1d1dcbf45ad271ad57a367f3bc138@45.94.58.53:26656,2c1de581a482ba5765f400d3e3bb144e6e6994c5@149.102.129.209:26656,9fafb42160d1a4d657ecd48c59060162b373c1bf@68.183.195.179:26656,e022461bf6ffc2d1880eca75e00dfd9920832ee7@147.45.71.126:26656,0be8a6aa4c29eb72b90bccced27574c1224ddb30@62.171.189.52:26656,3be7d5d891d5174865789ee32288a67ae37816ac@152.89.105.112:26656"
 sed -i 's|^persistent_peers *=.*|persistent_peers = "'$PEERS'"|' $HOME/.babylond/config/config.toml
 
+# 下载快照
+curl "https://snapshots-testnet.nodejumper.io/babylon-testnet/babylon-testnet_latest.tar.lz4" | lz4 -dc - | tar -xf - -C "$HOME/.babylond"
+
 
 # 设置启动服务
 sudo tee /etc/systemd/system/babylond.service > /dev/null <<EOF
@@ -181,61 +184,60 @@ function view_logs() {
     sudo journalctl -f -u babylond.service 
 }
 
-# 卸载脚本功能
-function uninstall_script() {
-    local alias_name="babylondf"
-    local shell_rc_files=("$HOME/.bashrc" "$HOME/.zshrc")
+# 卸载节点功能
+function uninstall_node() {
+    echo "你确定要卸载Babylon 节点程序吗？这将会删除所有相关的数据。[Y/N]"
+    read -r -p "请确认: " response
 
-    for shell_rc in "${shell_rc_files[@]}"; do
-        if [ -f "$shell_rc" ]; then
-            # 移除快捷键
-            sed -i "/alias $alias_name='bash $SCRIPT_PATH'/d" "$shell_rc"
-        fi
-    done
+    case "$response" in
+        [yY][eE][sS]|[yY]) 
+            echo "开始卸载节点程序..."
+            sudo systemctl stop babylond && sudo systemctl disable babylond && sudo rm /etc/systemd/system/babylond.service && sudo systemctl daemon-reload && rm -rf $HOME/.babylond && rm -rf babylon && sudo rm -rf $(which babylond)
 
-    echo "快捷键 '$alias_name' 已从shell配置文件中移除。"
-    read -p "是否删除脚本文件本身？(y/n): " delete_script
-    if [[ "$delete_script" == "y" ]]; then
-        rm -f "$SCRIPT_PATH"
-        echo "脚本文件已删除。"
-    else
-        echo "脚本文件未删除。"
-    fi
+            echo "节点程序卸载完成。"
+            ;;
+        *)
+            echo "取消卸载操作。"
+            ;;
+    esac
 }
 
 # 主菜单
 function main_menu() {
-    clear
-    echo "脚本以及教程由推特用户大赌哥 @y95277777 编写，免费开源，请勿相信收费"
-    echo "================================================================"
-    echo "节点社区 Telegram 群组:https://t.me/niuwuriji"
-    echo "节点社区 Telegram 频道:https://t.me/niuwuriji"
-    echo "请选择要执行的操作:"
-    echo "1. 安装节点"
-    echo "2. 创建钱包"
-    echo "3. 导入钱包"
-    echo "4. 创建验证者"
-    echo "5. 查看钱包地址余额"
-    echo "6. 查看节点同步状态"
-    echo "7. 查看当前服务状态"
-    echo "8. 运行日志查询"
-    echo "9. 卸载脚本"
-    echo "10. 设置快捷键"  
-    read -p "请输入选项（1-10）: " OPTION
+    while true; do
+        clear
+        echo "脚本以及教程由推特用户大赌哥 @y95277777 编写，免费开源，请勿相信收费"
+        echo "================================================================"
+        echo "节点社区 Telegram 群组:https://t.me/niuwuriji"
+        echo "节点社区 Telegram 频道:https://t.me/niuwuriji"
+        echo "退出脚本，请按键盘ctrl c退出即可"
+        echo "请选择要执行的操作:"
+        echo "1. 安装节点"
+        echo "2. 创建钱包"
+        echo "3. 导入钱包"
+        echo "4. 查看钱包地址余额"
+        echo "5. 查看节点同步状态"
+        echo "6. 查看当前服务状态"
+        echo "7. 运行日志查询"
+        echo "8. 卸载节点"
+        echo "9. 设置快捷键"  
+        read -p "请输入选项（0-9）: " OPTION
 
-    case $OPTION in
-    1) install_node ;;
-    2) add_wallet ;;
-    3) import_wallet ;;
-    4) add_validator ;;
-    5) check_balances ;;
-    6) check_sync_status ;;
-    7) check_service_status ;;
-    8) view_logs ;;
-    9) uninstall_script ;;
-    10) check_and_set_alias ;;  
-    *) echo "无效选项。" ;;
-    esac
+        case $OPTION in
+        1) install_node ;;
+        2) add_wallet ;;
+        3) import_wallet ;;
+        4) check_balances ;;
+        5) check_sync_status ;;
+        6) check_service_status ;;
+        7) view_logs ;;
+        8) uninstall_node ;;
+        9) check_and_set_alias ;;
+        *) echo "无效选项。" ;;
+        esac
+        echo "按任意键返回主菜单..."
+        read -n 1
+    done
 }
 
 # 显示主菜单
