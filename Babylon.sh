@@ -205,39 +205,41 @@ function uninstall_node() {
 # 主菜单
 function main_menu() {
     while true; do
-        clear
-        echo "脚本以及教程由推特用户大赌哥 @y95277777 编写，免费开源，请勿相信收费"
-        echo "================================================================"
-        echo "节点社区 Telegram 群组:https://t.me/niuwuriji"
-        echo "节点社区 Telegram 频道:https://t.me/niuwuriji"
-        echo "退出脚本，请按键盘ctrl c退出即可"
-        echo "请选择要执行的操作:"
-        echo "1. 安装节点"
-        echo "2. 创建钱包"
-        echo "3. 导入钱包"
-        echo "4. 查看钱包地址余额"
-        echo "5. 查看节点同步状态"
-        echo "6. 查看当前服务状态"
-        echo "7. 运行日志查询"
-        echo "8. 卸载节点"
-        echo "9. 设置快捷键"  
-        read -p "请输入选项（0-9）: " OPTION
+    clear
+    echo "脚本以及教程由推特用户大赌哥 @y95277777 编写，免费开源，请勿相信收费"
+    echo "================================================================"
+    echo "节点社区 Telegram 群组:https://t.me/niuwuriji"
+    echo "节点社区 Telegram 频道:https://t.me/niuwuriji"
+    echo "退出脚本，请按键盘ctrl c退出即可"
+    echo "请选择要执行的操作:"
+    echo "1. 安装节点"
+    echo "2. 创建钱包"
+    echo "3. 导入钱包"
+    echo "4. 创建验证者"
+    echo "5. 查看钱包地址余额"
+    echo "6. 查看节点同步状态"
+    echo "7. 查看当前服务状态"
+    echo "8. 运行日志查询"
+    echo "9. 卸载脚本"
+    echo "10. 设置快捷键"  
+    read -p "请输入选项（1-10）: " OPTION
 
-        case $OPTION in
-        1) install_node ;;
-        2) add_wallet ;;
-        3) import_wallet ;;
-        4) check_balances ;;
-        5) check_sync_status ;;
-        6) check_service_status ;;
-        7) view_logs ;;
-        8) uninstall_node ;;
-        9) check_and_set_alias ;;
-        *) echo "无效选项。" ;;
-        esac
-        echo "按任意键返回主菜单..."
-        read -n 1
-    done
+    case $OPTION in
+    1) install_node ;;
+    2) add_wallet ;;
+    3) import_wallet ;;
+    4) add_validator ;;
+    5) check_balances ;;
+    6) check_sync_status ;;
+    7) check_service_status ;;
+    8) view_logs ;;
+    9) uninstall_script ;;
+    10) check_and_set_alias ;;  
+    *) echo "无效选项。" ;;
+    esac
+    echo "按任意键返回主菜单..."
+    read -n 1
+done
 }
 
 # 显示主菜单
