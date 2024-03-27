@@ -48,12 +48,12 @@ rm -rf $HOME/go
 sudo rm -rf /usr/local/go
 cd $HOME
 curl https://dl.google.com/go/go1.22.0.linux-amd64.tar.gz | sudo tar -C/usr/local -zxvf -
-cat <<'EOF' >>$HOME/.profile
+cat <<'EOF' >>$HOME/.bash_profile
 export GOROOT=/usr/local/go
 export GOPATH=$HOME/go
 export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin
 EOF
-source $HOME/.profile
+source $HOME/.bash_profile
 go version
 
 
