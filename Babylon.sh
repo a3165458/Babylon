@@ -228,7 +228,7 @@ function main_menu() {
     6) check_sync_status ;;
     7) check_service_status ;;
     8) view_logs ;;
-    9) uninstall_script ;;
+    9) uninstall_node ;;
     10) check_and_set_alias ;;  
     *) echo "无效选项。" ;;
     esac
