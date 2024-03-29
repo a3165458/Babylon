@@ -125,8 +125,7 @@ sudo -S systemctl start babylond
 
 # 创建钱包
 function add_wallet() {
-    read -p "请输入钱包名称: " wallet_name
-    babylond keys add "$wallet_name"
+    babylond keys add wallet
 }
 
 # 创建验证者
@@ -154,8 +153,7 @@ EOF
 
 # 导入钱包
 function import_wallet() {
-    read -p "请输入钱包名称: " wallet_name
-    babylond keys add "$wallet_name" --recover
+    babylond keys add wallet --recover
 }
 
 # 查询余额
