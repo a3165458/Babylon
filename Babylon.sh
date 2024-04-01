@@ -84,7 +84,7 @@ function install_node() {
     git checkout v0.8.4
     make install
 
-    read -p "输入节点名称: " MONIKER
+    read -p "请输入你想设置的节点名称: " MONIKER
     babylond init $MONIKER --chain-id bbn-test-3
 
     wget https://github.com/babylonchain/networks/raw/main/bbn-test-3/genesis.tar.bz2
