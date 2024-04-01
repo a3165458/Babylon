@@ -1,5 +1,13 @@
 #!/bin/bash
 
+# 检查是否以root用户运行脚本
+if [ "$(id -u)" != "0" ]; then
+    echo "此脚本需要以root用户权限运行。"
+    echo "请尝试使用 'sudo -i' 命令切换到root用户，然后再次运行此脚本。"
+    exit 1
+fi
+
+
 # 检查并安装 Node.js 和 npm
 function install_nodejs_and_npm() {
     if ! command -v node > /dev/null 2>&1; then
@@ -30,13 +38,6 @@ function install_pm2() {
         echo "PM2 已安装。"
     fi
 }
-
-# 检查是否以root用户运行脚本
-if [ "$(id -u)" != "0" ]; then
-    echo "此脚本需要以root用户权限运行。"
-    echo "请尝试使用 'sudo -i' 命令切换到root用户，然后再次运行此脚本。"
-    exit 1
-fi
 
 install_nodejs_and_npm
 install_pm2
