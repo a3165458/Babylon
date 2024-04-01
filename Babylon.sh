@@ -105,12 +105,12 @@ function install_node() {
 }
 
 
-# 查看Avail服务状态
+# 查看babylon 服务状态
 function check_service_status() {
     pm2 list
 }
 
-# Avail 节点日志查询
+# babylon 节点日志查询
 function view_logs() {
     pm2 logs babylon-node
 }
@@ -133,17 +133,66 @@ function uninstall_node() {
     esac
 }
 
+# 创建钱包
+function add_wallet() {
+    babylond keys add wallet
+}
+
+# 创建验证者
+function add_validator() {
+    read -p "请输入你的验证者名称: " validator_name
+    sudo tee ~/validator.json > /dev/null <<EOF
+{
+  "pubkey": $(babylond tendermint show-validator),
+  "amount": "100000ubbn",
+  "moniker": "$validator_name",
+  "details": "dalubi",
+  "commission-rate": "0.10",
+  "commission-max-rate": "0.20",
+  "commission-max-change-rate": "0.01",
+  "min-self-delegation": "1"
+}
+EOF
+    /root/go/bin/babylond tx checkpointing create-validator ~/validator.json \
+    --chain-id=bbn-test-3 \
+    --gas="auto" \
+    --gas-adjustment="1.5" \
+    --gas-prices="0.025ubbn" \
+    --from=wallet
+}
+
+# 导入钱包
+function import_wallet() {
+    babylond keys add wallet --recover
+}
+
+# 查询余额
+function check_balances() {
+    read -p "请输入钱包地址: " wallet_address
+    babylond query bank balances "$wallet_address" 
+}
+
+# 查看节点同步状态
+function check_sync_status() {
+    babylond status | jq .sync_info
+}
+
 # 主菜单
 function main_menu() {
     while true; do
         clear
         echo "请选择要执行的操作:"
         echo "1. 安装节点"
-        echo "2. 查看服务状态"
-        echo "3. 运行日志查询"
-        echo "4. 卸载节点"
-        echo "5. 设置快捷键" 
-        read -p "请输入选项（1-9）: " OPTION
+        echo "2. 创建钱包"
+        echo "3. 导入钱包"
+        echo "4. 创建验证者"
+        echo "5. 查看钱包地址余额"
+        echo "6. 查看节点同步状态"
+        echo "7. 查看当前服务状态"
+        echo "8. 运行日志查询"
+        echo "9. 卸载脚本"
+        echo "10. 设置快捷键"  
+        read -p "请输入选项（1-10）: " OPTION
 
         case $OPTION in
         1) install_node ;;
