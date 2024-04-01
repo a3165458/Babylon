@@ -96,6 +96,8 @@ function install_node() {
     sed -i -e "s|^\(network = \).*|\1\"signet\"|" $HOME/.babylond/config/app.toml
     sed -i -e "s|^minimum-gas-prices *=.*|minimum-gas-prices = \"0.00001ubbn\"|" $HOME/.babylond/config/app.toml
 
+    curl https://snapshots-testnet.nodejumper.io/babylon-testnet/babylon-testnet_latest.tar.lz4 | lz4 -dc - | tar -xf - -C $HOME/.babylond
+
     # 以 PM2 形式运行 babylond
     pm2 start babylond -- start && pm2 save && pm2 startup
     echo '====================== 安装完成 ==========================='
