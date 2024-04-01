@@ -39,8 +39,6 @@ function install_pm2() {
     fi
 }
 
-install_nodejs_and_npm
-install_pm2
 
 # 脚本保存路径
 SCRIPT_PATH="$HOME/Babylon.sh"
@@ -70,6 +68,9 @@ function check_and_set_alias() {
 function install_node() {
     sudo apt update && sudo apt upgrade -y
     sudo apt -qy install curl git jq lz4 build-essential
+
+    install_nodejs_and_npm
+    install_pm2
 
     rm -rf $HOME/go
     sudo rm -rf /usr/local/go
