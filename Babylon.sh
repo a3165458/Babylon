@@ -97,10 +97,7 @@ function install_node() {
     sed -i -e "s|^minimum-gas-prices *=.*|minimum-gas-prices = \"0.00001ubbn\"|" $HOME/.babylond/config/app.toml
 
     # 以 PM2 形式运行 babylond
-    pm2 start $(which babylond) --name babylon-node -- start
-    pm2 save
-    pm2 startup
-
+    pm2 start babylond -- start && pm2 save && pm2 startup
     echo '====================== 安装完成 ==========================='
 }
 
