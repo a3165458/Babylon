@@ -142,7 +142,7 @@ function add_wallet() {
 # 创建验证者
 function add_validator() {
     read -p "请输入你的验证者名称: " validator_name
-    sudo tee ~/validator.json > /dev/null <<EOF
+    sudo tee ~/validator.json >> /dev/null <<EOF
 {
   "pubkey": $(babylond tendermint show-validator),
   "amount": "100000ubbn",
