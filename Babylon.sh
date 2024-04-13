@@ -186,6 +186,7 @@ function main_menu() {
         echo "================================================================"
         echo "节点社区 Telegram 群组:https://t.me/niuwuriji"
         echo "节点社区 Telegram 频道:https://t.me/niuwuriji"
+        echo "节点社区 Discord 社群:https://discord.gg/GbMV5EcNWF"
         echo "退出脚本，请按键盘ctrl c退出即可"
         echo "请选择要执行的操作:"
         echo "1. 安装节点"
